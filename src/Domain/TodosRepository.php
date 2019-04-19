@@ -10,4 +10,6 @@ interface TodosRepository
     public function getAll(): array;
 
     public function add(string $description): void;
+
+    public function remove(int $id): void;
 }

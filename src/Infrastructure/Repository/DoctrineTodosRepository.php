@@ -8,6 +8,7 @@ namespace App\Infrastructure\Repository;
 use App\Domain\Model\Todo;
 use App\Domain\TodosRepository;
 use Doctrine\ORM\EntityRepository;
+use InvalidArgumentException;
 
 class DoctrineTodosRepository extends EntityRepository implements TodosRepository
 {
@@ -20,6 +21,17 @@ class DoctrineTodosRepository extends EntityRepository implements TodosRepositor
     {
         $todo = new Todo(null, $description);
         $this->_em->persist($todo);
+        $this->_em->flush();
+    }
+
+    public function remove(int $id): void
+    {
+        $todo = $this->findOneBy(['id' => $id]);
+        if (null === $todo) {
+            throw new InvalidArgumentException('Invalid Todo id given.');
+        }
+
+        $this->_em->remove($todo);
         $this->_em->flush();
     }
 }

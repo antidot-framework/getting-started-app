@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Antidot\Application\Http\Application;
 use App\Application\Http\Handler\AddTodo;
 use App\Application\Http\Handler\HomePage;
+use App\Application\Http\Handler\RemoveTodo;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -23,4 +24,5 @@ use Psr\Container\ContainerInterface;
 return static function (Application $app, ContainerInterface $container) : void {
     $app->get('/', [HomePage::class], 'home');
     $app->post('/todos/add', [AddTodo::class], 'add_todo');
+    $app->post('/todos/remove/{id}', [RemoveTodo::class], 'remove_todo');
 };

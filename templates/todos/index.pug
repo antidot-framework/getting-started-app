@@ -4,10 +4,17 @@ extends ../base.pug
 block content
     h1 Todos app List
 
+    if success
+        div(class="row")
+            div(class="card row green lighten-3 white-text" style="padding: 20px 15px")
+                dic(class="card-content")
+                    span= success
+
     if error
-        div(class="card row red lighten-3 white-text" style="padding: 20px 15px")
-            dic(class="card-content")
-                span= error
+        div(class="row")
+            div(class="card row red lighten-3 white-text" style="padding: 20px 15px")
+                dic(class="card-content")
+                    span= error
 
     div(class="row")
         div(class="col-12")
@@ -23,7 +30,17 @@ block content
     ul(class="collection")
         each todo in todos
             li(class="collection-item")= todo.description()
-                a(href="#")
+                a(href='#remove-modal' + todo.id() class="modal-trigger")
                     i(class="material-icons right red-text") delete
                 a(href="#")
-                    i(class="material-icons right yellow-text") edit
+                    i(class="material-icons right yellow-text text-darken-2") edit
+
+                div(id='remove-modal' + todo.id() class="modal")
+                    div(class="modal-content")
+                        h5 Are you sure you want to delete this todo?
+                        blockquote= todo.description()
+                    div(class="modal-footer")
+                        form(method="POST" action='/todos/remove/' + todo.id() )
+                            button(type="submit" class="waves-effect waves-green btn-flat")
+                                i(class="material-icons left red-text") delete
+                                | Agree
