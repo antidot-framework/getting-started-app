@@ -3,6 +3,8 @@ services:
   App\Application\Http\Handler\HomePage:
   App\Application\Http\Handler\AddTodo:
   App\Application\Http\Handler\RemoveTodo:
+  App\Application\Http\Handler\EditTodo:
+  App\Application\Http\Middleware\ValidateTodoRequest:
   Psr\Log\LoggerInterface:
     factory: [Antidot\Logger\Container\MonologFactory]
   App\Domain\TodosRepository:

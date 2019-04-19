@@ -16,6 +16,11 @@ class Todo
         $this->description = $description;
     }
 
+    public function update(string $description): void
+    {
+        $this->description = $description;
+    }
+
     public function id(): int
     {
         return $this->id;

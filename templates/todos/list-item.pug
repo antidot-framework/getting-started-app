@@ -1,0 +1,29 @@
+// templates/todos/list-item.pug
+li(class="collection-item")
+    p(class="flow-text")
+        i(class="material-icons left blue-text") build
+        = todo.description()
+        a(href='#remove-modal' + todo.id() class="modal-trigger")
+            i(class="material-icons right red-text") delete
+        a(href='#edit-modal' + todo.id() class="modal-trigger")
+            i(class="material-icons right yellow-text text-darken-2") edit
+
+    div(id='remove-modal' + todo.id() class="modal")
+        div(class="modal-content")
+            h5 Are you sure you want to delete this todo?
+            blockquote= todo.description()
+        div(class="modal-footer")
+            form(method="POST" action='/todos/remove/' + todo.id() )
+                button(type="submit" class="waves-effect waves-green btn-flat")
+                    i(class="material-icons left red-text") delete
+                    | Agree
+
+    div(id='edit-modal' + todo.id() class="modal")
+        form(action='/todos/edit/' + todo.id() method="POST")
+            div(class="modal-content")
+                h5 Edit Todo content
+                textarea(class="materialize-textarea" name="description")=todo.description()
+            div(class="modal-footer")
+                button(type="submit" class="waves-effect waves-green btn-flat")
+                    i(class="material-icons left blue-text") save
+                    | Save

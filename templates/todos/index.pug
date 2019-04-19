@@ -29,18 +29,4 @@ block content
 
     ul(class="collection")
         each todo in todos
-            li(class="collection-item")= todo.description()
-                a(href='#remove-modal' + todo.id() class="modal-trigger")
-                    i(class="material-icons right red-text") delete
-                a(href="#")
-                    i(class="material-icons right yellow-text text-darken-2") edit
-
-                div(id='remove-modal' + todo.id() class="modal")
-                    div(class="modal-content")
-                        h5 Are you sure you want to delete this todo?
-                        blockquote= todo.description()
-                    div(class="modal-footer")
-                        form(method="POST" action='/todos/remove/' + todo.id() )
-                            button(type="submit" class="waves-effect waves-green btn-flat")
-                                i(class="material-icons left red-text") delete
-                                | Agree
+            include ./list-item.pug

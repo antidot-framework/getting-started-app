@@ -28,9 +28,14 @@ class HomePage implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $todos = $this->todosRepository->getAll();
+        $session = $request->getAttribute('session');
 
         return new HtmlResponse(
-            $this->templateRenderer->render('todos/index', ['todos' => $todos])
+            $this->templateRenderer->render('todos/index', [
+                'todos' => $todos,
+                'error' => $session->getFlash('error'),
+                'success' => $session->getFlash('success'),
+            ])
         );
     }
 }

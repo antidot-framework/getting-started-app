@@ -11,5 +11,7 @@ interface TodosRepository
 
     public function add(string $description): void;
 
+    public function update(int $id, string $description): void;
+
     public function remove(int $id): void;
 }

@@ -1,5 +1,5 @@
 <?php
-// src/Application/Http/Handler/AddTodo.php
+// src/Application/Http/Handler/EditTodo.php
 
 declare(strict_types=1);
 
@@ -12,9 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\RedirectResponse;
 
-use function sprintf;
-
-class AddTodo implements RequestHandlerInterface
+class EditTodo implements RequestHandlerInterface
 {
     private $todosRepository;
 
@@ -25,14 +23,15 @@ class AddTodo implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $id = (int)$request->getAttribute('id');
         $description = $request->getAttribute('description');
         $session = $request->getAttribute('session');
 
         try {
-            $this->todosRepository->add($description);
-            $session->setFlash('success', 'Todo successfully added to list.');
+            $this->todosRepository->update($id, $description);
+            $session->setFlash('success', 'Todo successfully updated.');
         } catch (InvalidArgumentException $e) {
-            $session->setFlash('error', sprintf('%s', $e->getMessage()));
+            $session->setFlash('error', $e->getMessage());
         }
 
         return new RedirectResponse('/');
