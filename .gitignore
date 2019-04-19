@@ -6,6 +6,7 @@
 /vendor
 /var/cache/*
 !/var/cache/.gitkeep
+/var/database.sqlite
 /var/log/*
 !/var/log/.gitkeep
 

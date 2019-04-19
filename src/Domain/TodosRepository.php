@@ -8,4 +8,6 @@ namespace App\Domain;
 interface TodosRepository
 {
     public function getAll(): array;
+
+    public function add(string $description): void;
 }

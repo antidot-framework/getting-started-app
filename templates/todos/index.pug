@@ -4,10 +4,26 @@ extends ../base.pug
 block content
     h1 Todos app List
 
+    if error
+        div(class="card row red lighten-3 white-text" style="padding: 20px 15px")
+            dic(class="card-content")
+                span= error
+
+    div(class="row")
+        div(class="col-12")
+            form(action="/todos/add" method="POST")
+                div(class="row")
+                    div(class="input-field col-12")
+                        input(type="text" placeholder="Type Todo Description" name="description" id="description")
+                div
+                    button(class="waves-effect waves-light btn-large" type="submit")
+                        i(class="material-icons left") save
+                        | Add
+
     ul(class="collection")
         each todo in todos
             li(class="collection-item")= todo.description()
-            a(href="#")
-                i(class="material-icons right red-text") delete
-            a(href="#")
-                i(class="material-icons right yellow-text") edit
+                a(href="#")
+                    i(class="material-icons right red-text") delete
+                a(href="#")
+                    i(class="material-icons right yellow-text") edit

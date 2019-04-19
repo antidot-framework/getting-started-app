@@ -1,6 +1,7 @@
 services:
   App\Application\EventListener\SomeEventListener:
   App\Application\Http\Handler\HomePage:
+  App\Application\Http\Handler\AddTodo:
   Psr\Log\LoggerInterface:
     factory: [Antidot\Logger\Container\MonologFactory]
   App\Domain\TodosRepository:
