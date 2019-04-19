@@ -2,4 +2,5 @@
 
 > *Learn by doing*
 
-*[Start now](/#Getting-Started)*
+[**Follow us on Twitter**](https://twitter.com/intent/follow?screen_name=antidotframewo1)
+[*Start now*](/#Getting-Started)
