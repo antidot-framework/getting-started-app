@@ -3,14 +3,14 @@ services:
   App\Application\Http\Handler\HomePage:
   Psr\Log\LoggerInterface:
     factory: [Antidot\Logger\Container\MonologFactory]
+  App\Domain\TodosRepository:
+    factory: [Antidot\Persistence\Doctrine\Container\EntityRepositoryFactory, 'App\Domain\Model\Todo']
+  Antidot\Render\TemplateRenderer:
+    factory: [Antidot\Render\Phug\Container\PugRendererFactory]
 
 parameters:
   debug: false
   config_cache_enabled: true
-  app-events:
-    event-listeners:
-      App\Application\Event\SomeEvent:
-        - App\Application\EventListener\SomeEventListener
   monolog:
     handlers:
       default:
@@ -18,3 +18,8 @@ parameters:
         options:
           stream: 'var/log/%date%-default.log'
           level: 400
+  doctrine:
+    connection:
+      orm_default:
+        params:
+          path: var/database.sqlite

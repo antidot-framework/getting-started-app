@@ -14,6 +14,8 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \Antidot\Render\Phug\Container\Config\ConfigProvider::class,
+    \Antidot\Persistence\Doctrine\Container\Config\ConfigProvider::class,
     \Antidot\Logger\Container\Config\ConfigProvider::class,
     \Antidot\Event\Container\Config\ConfigProvider::class,
     \Antidot\Cli\Container\Config\ConfigProvider::class,

@@ -1,0 +1,14 @@
+# config/doctrine/Todo.orm.yml
+App\Domain\Model\Todo:
+  type: entity
+  table: todos
+  repositoryClass: App\Infrastructure\Repository\DoctrineTodosRepository
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    description:
+      type: string
+      length: 255
