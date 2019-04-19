@@ -1,0 +1,13 @@
+/composer.lock
+
+/config/autoload/*.local.php
+/config/development.config.php
+
+/vendor
+/var/cache/*
+!/var/cache/.gitkeep
+/var/log/*
+!/var/log/.gitkeep
+
+/.idea
+/.phpunit.result.cache
