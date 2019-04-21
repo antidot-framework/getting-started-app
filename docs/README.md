@@ -17,6 +17,12 @@ php -S 127.0.0.1:8000 -t public
 
 ![Default homepage](/images/default-homepage.jpg)
 
+To run Antidot Framework in dev mode, rename `config/services/dependencies.dev.yaml.dist` to `config/services/dependencies.dev.yaml`
+
+````bash
+mv config/services/dependencies.dev.yaml.dist config/services/dependencies.dev.yaml
+````
+
 Open another console and check the built-in Cli tool
 
 ````bash
