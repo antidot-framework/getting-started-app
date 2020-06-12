@@ -1,13 +1,9 @@
 <?php
 
-use Aura\Di\ContainerBuilder;
-use Antidot\Container\Config\ContainerConfig;
-
 // Load configuration
+use Antidot\Container\Builder;
+
 $config = require __DIR__ . '/../config/config.php';
 
 // Build container
-$builder = new ContainerBuilder();
-return $builder->newConfiguredInstance([
-    new ContainerConfig(\is_array($config) ? $config : []),
-], $builder::AUTO_RESOLVE);
+return Builder::build($config, true);

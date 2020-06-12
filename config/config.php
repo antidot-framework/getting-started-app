@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use Antidot\DevTools\Container\Config\ConfigProvider as DevToolsConfigProvider;
+use Antidot\SymfonyConfigTranslator\Container\Config\ConfigAggregator;
 use Antidot\SymfonyConfigTranslator\Container\Config\ConfigTranslator;
-use Zend\ConfigAggregator\ConfigAggregator;
-use Zend\ConfigAggregator\PhpFileProvider;
-use Zend\ConfigAggregator\ZendConfigProvider;
+use Antidot\Yaml\YamlConfigProvider;
+use Laminas\ConfigAggregator\ArrayProvider;
+use Laminas\ConfigAggregator\PhpFileProvider;
 
 // To enable or disable caching, set the `ConfigAggregator::ENABLE_CACHE` boolean in
 // `config/autoload/local.php`.
@@ -14,16 +16,17 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \WShafer\PSR11MonoLog\ConfigProvider::class,
     \Antidot\Session\Container\Config\ConfigProvider::class,
     \Antidot\Render\Phug\Container\Config\ConfigProvider::class,
     \Antidot\Persistence\Doctrine\Container\Config\ConfigProvider::class,
-    \Antidot\Logger\Container\Config\ConfigProvider::class,
-    \Antidot\Event\Container\Config\ConfigProvider::class,
     \Antidot\Cli\Container\Config\ConfigProvider::class,
-    \Antidot\Aura\Router\Container\Config\ConfigProvider::class,
-    \WShafer\PSR11MonoLog\ConfigProvider::class,
-    \Zend\HttpHandlerRunner\ConfigProvider::class,
+    \Antidot\Logger\Container\Config\ConfigProvider::class,
     \Antidot\Container\Config\ConfigProvider::class,
+    \Laminas\HttpHandlerRunner\ConfigProvider::class,
+    \Antidot\Fast\Router\Container\Config\ConfigProvider::class,
+    \Antidot\Event\Container\Config\ConfigProvider::class,
+    class_exists(DevToolsConfigProvider::class) ? DevToolsConfigProvider::class : fn() => [],
     // Load application config in a pre-defined order in such a way that local settings
     // overwrite global settings. (Loaded as first to last):
     //   - `global.php`
@@ -31,6 +34,8 @@ $aggregator = new ConfigAggregator([
     //   - `local.php`
     //   - `*.local.php`
     new PhpFileProvider(realpath(__DIR__).'/services/{{,*.}prod,{,*.}local,{,*.}dev}.php'),
-    new ZendConfigProvider(realpath(__DIR__).'/services/{{,*.}prod,{,*.}local,{,*.}dev}.yaml'),
+    new YamlConfigProvider(realpath(__DIR__).'/services/{{,*.}prod,{,*.}local,{,*.}dev}.yaml'),
+    new ArrayProvider($cacheConfig),
 ], $cacheConfig['config_cache_path']);
-return (new ConfigTranslator())($aggregator->getMergedConfig());
+
+return $aggregator->getMergedConfig();
