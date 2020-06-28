@@ -23,6 +23,12 @@ To run Antidot Framework in dev mode, rename `config/services/dependencies.dev.y
 mv config/services/dependencies.dev.yaml.dist config/services/dependencies.dev.yaml
 ````
 
+Or use the cli tool.
+
+```bash
+bin/console config:development-mode
+```
+
 Open another console and check the built-in Cli tool
 
 ````bash
@@ -102,7 +108,7 @@ First, we can install an integration package with Doctrine Dbal. One of the adva
 For simplicity we have created a package on top of container-interop-doctrine adding console tool integration with Antidot framework, and a very useful `EntityRepositoryFactory`
 
 ````bash
-composer require antidot-fw/doctrine:dev-master
+composer require antidot-fw/doctrine
 ````
 
 Then enable it in `config/services` folder.
@@ -235,7 +241,7 @@ class DoctrineTodosRepository extends EntityRepository implements TodosRepositor
 Now we need a templating system to render our views. For this task, we can use Pug template renderer
 
 ````bash
-composer require antidot-fw/phug-template-renderer:dev-master
+composer require antidot-fw/phug-template-renderer
 ````
 
 First of all, we need to configure application template renderer in `config/services` directory
@@ -307,7 +313,7 @@ We need to install Antidot session middleware package, made on top of [Aura Sess
 We are going to use [webmozart/assert](https://github.com/webmozart/assert) library to validate description, and we need to draw some kind of form on the web page to allow the users to submit Todos.
 
 ````bash
-composer require antidot-fw/session:dev-master
+composer require antidot-fw/session
 composer require webmozart/assert
 ````
 
@@ -398,11 +404,11 @@ declare(strict_types=1);
 
 use Antidot\Application\Http\Application;
 use App\Application\Http\Handler\AddTodo;
-use App\Application\Http\Handler\HomePage;
+use App\Application\Http\Handler\MarkdownHandler;
 use Psr\Container\ContainerInterface;
 
 return static function (Application $app, ContainerInterface $container) : void {
-    $app->get('/', [HomePage::class], 'home');
+    $app->get('/', [MarkdownHandler::class], 'home');
     $app->post('/todos/add', [AddTodo::class], 'add_todo');
 };
 ````
