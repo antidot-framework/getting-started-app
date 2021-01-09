@@ -17,6 +17,7 @@ class ValidateTodoRequest implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        /** @var array $data */
         $data = $request->getParsedBody();
 
         try {

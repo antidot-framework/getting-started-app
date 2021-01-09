@@ -26,6 +26,7 @@ class DoctrineTodosRepository extends EntityRepository implements TodosRepositor
 
     public function update(int $id, string $description): void
     {
+        /** @var ?Todo $todo */
         $todo = $this->findOneBy(['id' => $id]);
         if (null === $todo) {
             throw new InvalidArgumentException('Invalid Todo id given.');

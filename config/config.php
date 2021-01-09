@@ -16,6 +16,7 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \Laminas\Diactoros\ConfigProvider::class,
     \WShafer\PSR11MonoLog\ConfigProvider::class,
     \Antidot\Session\Container\Config\ConfigProvider::class,
     \Antidot\Render\Phug\Container\Config\ConfigProvider::class,
