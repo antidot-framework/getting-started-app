@@ -25,5 +25,10 @@ parameters:
   doctrine:
     connection:
       orm_default:
+        driver_class: Doctrine\DBAL\Driver\PDOSqlite\Driver
         params:
-          path: var/database.sqlite
+          path: 'var/database.sqlite'
+    driver:
+      orm_default:
+        paths:
+          config/doctrine: App\Domain\Model

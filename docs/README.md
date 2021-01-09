@@ -10,7 +10,7 @@ You can find full repository [here]() on Github, the repo is committed step by s
 Create a project using [composer](https://getcomposer.org/download/) package manager:
 
 ````bash
-composer create-project antidot-fw/antidot-framework-starter:dev-master dev
+composer create-project antidot-fw/antidot-framework-starter dev
 mv dev/.* dev/* ./ && rmdir dev
 php -S 127.0.0.1:8000 -t public
 ````
@@ -105,7 +105,7 @@ For this class, we need two things, first one the `TodosRepository` where we go 
 
 First, we can install an integration package with Doctrine Dbal. One of the advantages of using a PSR-11 compatible dependency Injection container is the opportunity to use a lot of packages made by PHP community, for example we can install [DASPRiD/container-interop-doctrine](https://github.com/DASPRiD/container-interop-doctrine). 
 
-For simplicity we have created a package on top of container-interop-doctrine adding console tool integration with Antidot framework, and a very useful `EntityRepositoryFactory`
+For simplicity purposes, we have created a package on top of container-interop-doctrine adding console tool integration with Antidot framework, and a very useful `EntityRepositoryFactory`
 
 ````bash
 composer require antidot-fw/doctrine
@@ -125,8 +125,13 @@ parameters:
   doctrine:
     connection:
       orm_default:
+        driver_class: Doctrine\DBAL\Driver\PDOSqlite\Driver
         params:
-          path: var/database.sqlite
+          path: 'var/database.sqlite'
+    driver:
+      orm_default:
+        paths:
+          config/doctrine: App\Domain\Model
 ````
 
 We define a lot of stuff here, we can start to add mapping files in `config/doctrine` directory
