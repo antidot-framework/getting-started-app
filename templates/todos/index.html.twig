@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{# templates/todos/index.html.twig #}
+
+{% block content %}
+    <h1>Todos app List</h1>
+
+    {% if success %}
+        <div class="row">
+            <div class="card row green lighten-3 white-text" style="padding: 20px 15px">
+                <div class="card-content">
+                    <span>{{ success }}</span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if error %}
+        <div class="row">
+            <div class="card row red lighten-3 white-text" style="padding: 20px 15px">
+                <div class="card-content">
+                    <span>{{ error }}</span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-12">
+            <form action="/todos/add" method="POST">
+                <div class="row">
+                    <div class="input-field col-12">
+                        <input type="text" placeholder="Type Todo Description" name="description" id="description"/>
+                    </div>
+                </div>
+                <div>
+                    <button class="waves-effect waves-light btn-large" type="submit">
+                        <i class="material-icons left">save</i>
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <ul class="collection">
+        {% for todo in todos %}
+            {% include 'todos/list-item.html.twig' %}
+        {% endfor %}
+    </ul>
+{% endblock %}

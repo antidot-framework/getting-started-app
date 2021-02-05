@@ -11,13 +11,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Webmozart\Assert\Assert;
-use Zend\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
 
 class ValidateTodoRequest implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        /** @var array $data */
+        /** @var array<string> $data */
         $data = $request->getParsedBody();
 
         try {

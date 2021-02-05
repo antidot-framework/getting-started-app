@@ -10,14 +10,12 @@ use App\Domain\TodosRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
 
 class HomePage implements RequestHandlerInterface
 {
-    /** @var TodosRepository */
-    private $todosRepository;
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    private TodosRepository $todosRepository;
+    private TemplateRenderer $templateRenderer;
 
     public function __construct(TodosRepository $todosRepository, TemplateRenderer $templateRenderer)
     {
@@ -31,7 +29,7 @@ class HomePage implements RequestHandlerInterface
         $session = $request->getAttribute('session');
 
         return new HtmlResponse(
-            $this->templateRenderer->render('todos/index', [
+            $this->templateRenderer->render('todos/index.html', [
                 'todos' => $todos,
                 'error' => $session->getFlash('error'),
                 'success' => $session->getFlash('success'),

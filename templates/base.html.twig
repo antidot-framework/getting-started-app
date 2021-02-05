@@ -1,0 +1,18 @@
+{# templates/base.html-twig#}
+<html>
+<head>
+    <title>Antidot Todo List app</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+</head>
+<body>
+<main>
+    <section class="container">
+        {% block content %}{% endblock %}
+    </section>
+</main>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
