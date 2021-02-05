@@ -2,5 +2,5 @@
 
 > *Learn by doing*
 
-[**Follow us on Twitter**](https://twitter.com/intent/follow?screen_name=antidotframewo1)
+[**Start on Github**](https://github.com/antidot-framework/getting-started-app/stargazers)
 [*Start now*](/#Getting-Started)
