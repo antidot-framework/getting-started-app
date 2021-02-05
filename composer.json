@@ -7,34 +7,45 @@
       "name": "kpicaza"
     }
   ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/antidot-framework/psr11-monolog"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/antidot-framework/psr-container-doctrine"
+    }
+  ],
   "require": {
-    "php": "^7.4",
+    "php": "^7.4|^8.0",
     "ext-json": "*",
-    "antidot-fw/cli": "^1.1.2",
-    "antidot-fw/container": "^0.1.3",
-    "antidot-fw/doctrine": "1.0.2",
+    "antidot-fw/cli": "^1.1.0",
+    "antidot-fw/container": "^0.1.0",
+    "antidot-fw/doctrine": "^1.0.3",
     "antidot-fw/event-dispatcher": "^2.0.0",
-    "antidot-fw/fast-router-adapter": "^0.1.0",
-    "antidot-fw/framework": "^0.1.2",
-    "antidot-fw/logger": "^1.1.1",
-    "antidot-fw/phug-template-renderer": "0.0.1",
-    "antidot-fw/session": "0.1.0",
-    "antidot-fw/symfony-config-translator": "^1.1.1",
-    "antidot-fw/yaml-config-provider": "^0.1.1",
+    "antidot-fw/fast-router-adapter": "^0.2.0",
+    "antidot-fw/framework": "^0.2.0",
+    "antidot-fw/logger": "^1.1.0",
+    "antidot-fw/session": "^0.2.0",
+    "antidot-fw/symfony-config-translator": "^1.1.0",
+    "antidot-fw/twig-template-renderer": "^0.2.0",
+    "antidot-fw/yaml-config-provider": "^0.1.0",
     "doctrine/migrations": "^2.2",
-    "wshafer/psr11-monolog": "^3.0.0"
+    "roave/psr-container-doctrine": "@dev",
+    "wshafer/psr11-monolog": "^3.0.0|@dev"
   },
   "require-dev": {
-    "antidot-fw/dev-tools": "dev-master",
+    "antidot-fw/dev-tools": "^0.1.1",
     "filp/whoops": "^2.5",
-    "franzl/whoops-middleware": "^1.1",
+    "franzl/whoops-middleware": "^2.0",
     "laminas/laminas-component-installer": "^2.1",
-    "phpro/grumphp": "^0.17.0 || ^1.0",
-    "phpstan/phpstan": "^0.11.5",
-    "phpunit/phpunit": "^8.0",
+    "phpro/grumphp": "~1.0",
+    "phpstan/phpstan": "^0.12.32",
+    "phpunit/phpunit": "^9.2",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^3.4",
-    "symfony/var-dumper": "^4.2"
+    "symfony/var-dumper": "^5.1"
   },
   "autoload": {
     "psr-4": {

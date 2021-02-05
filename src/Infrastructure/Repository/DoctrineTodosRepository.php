@@ -10,6 +10,9 @@ use App\Domain\TodosRepository;
 use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
 
+/**
+ * @extends \Doctrine\ORM\EntityRepository<Todo>
+ */
 class DoctrineTodosRepository extends EntityRepository implements TodosRepository
 {
     public function getAll(): array

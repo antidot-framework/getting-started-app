@@ -12,6 +12,9 @@ services:
   Antidot\Render\TemplateRenderer:
     factory: [Antidot\Render\Phug\Container\PugRendererFactory]
 
+  Antidot\Session\Application\Http\SessionSegmentFactory:
+    class: Antidot\Session\Infrastructure\AuraSessionSegmentFactory
+
 parameters:
   debug: false
   config_cache_enabled: true
@@ -32,3 +35,6 @@ parameters:
       orm_default:
         paths:
           config/doctrine: App\Domain\Model
+  template:
+    debug: true
+    cache: false

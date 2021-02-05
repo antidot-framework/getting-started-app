@@ -16,10 +16,10 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \Antidot\Session\Container\Config\ConfigProvider::class,
+    \Antidot\Render\Twig\Container\Config\ConfigProvider::class,
     \Laminas\Diactoros\ConfigProvider::class,
     \WShafer\PSR11MonoLog\ConfigProvider::class,
-    \Antidot\Session\Container\Config\ConfigProvider::class,
-    \Antidot\Render\Phug\Container\Config\ConfigProvider::class,
     \Antidot\Persistence\Doctrine\Container\Config\ConfigProvider::class,
     \Antidot\Cli\Container\Config\ConfigProvider::class,
     \Antidot\Logger\Container\Config\ConfigProvider::class,

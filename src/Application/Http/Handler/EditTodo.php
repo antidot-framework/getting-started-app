@@ -10,11 +10,11 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
 
 class EditTodo implements RequestHandlerInterface
 {
-    private $todosRepository;
+    private TodosRepository $todosRepository;
 
     public function __construct(TodosRepository $todosRepository)
     {

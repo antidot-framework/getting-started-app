@@ -13,8 +13,8 @@ use Antidot\Session\Application\Http\Middleware\SessionMiddleware;
 return static function (Application $app) : void {
     $app->pipe(ErrorMiddleware::class);
     $app->pipe(ExceptionLoggerMiddleware::class);
-    $app->pipe(SessionMiddleware::class);
     $app->pipe(RequestLoggerMiddleware::class);
+    $app->pipe(SessionMiddleware::class);
     $app->pipe(RouteDispatcherMiddleware::class);
     $app->pipe(RouteNotFoundMiddleware::class);
 };

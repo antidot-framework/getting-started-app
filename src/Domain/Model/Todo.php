@@ -7,8 +7,8 @@ namespace App\Domain\Model;
 
 class Todo
 {
-    private $id;
-    private $description;
+    private ?int $id;
+    private string $description;
 
     public function __construct(?int $id, string $description)
     {
