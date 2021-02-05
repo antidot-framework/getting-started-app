@@ -1,9 +1,9 @@
 Getting Started
 =================
 
-This example app is made with the purpose of learning to use [Antidot Framework](https://antidotfw.io/) with [doctrine ORM](https://www.doctrine-project.org/), [Pug templating system](https://www.phug-lang.com/), and some PHP framework agnostic techniques
+This example app is made with the purpose of learning to use [Antidot Framework](https://antidotfw.io/) with [doctrine ORM](https://www.doctrine-project.org/), [Twig templating system](https://twig.symfony.com/), and some PHP framework agnostic techniques
 
-You can find full repository [here]() on Github, the repo is committed step by step to facilitate the follow of the tutorial
+You can find full repository [here](https://github.com/antidot-framework/getting-started-app) on Github, the repo is committed step by step to facilitate the follow of the tutorial
 
 ## Step 1: Create Project
 
@@ -93,7 +93,7 @@ class HomePage implements RequestHandlerInterface
         $todos = $this->todosRepository->getAll();
 
         return new HtmlResponse(
-            $this->templateRenderer->render('todos/index', ['todos' => $todos])
+            $this->templateRenderer->render('todos/index.html', ['todos' => $todos])
         );
     }
 }
@@ -241,12 +241,12 @@ class DoctrineTodosRepository extends EntityRepository implements TodosRepositor
 }
 ````
 
-### Step-2.2: Php Pug Integration
+### Step-2.2: Twig Integration
 
-Now we need a templating system to render our views. For this task, we can use Pug template renderer
+Now we need a templating system to render our views. For this task, we can use the Twig template renderer
 
 ````bash
-composer require antidot-fw/phug-template-renderer
+composer require antidot-fw/twig-template-renderer
 ````
 
 First of all, we need to configure application template renderer in `config/services` directory
@@ -256,46 +256,60 @@ First of all, we need to configure application template renderer in `config/serv
 services:
   ...
   Antidot\Render\TemplateRenderer:
-    factory: [Antidot\Render\Phug\Container\PugRendererFactory]
+    factory: [Antidot\Render\Phug\Container\TwigRendererFactory]
+# config/services/dependencies.dev.yaml
+parameters:
+  ...
+  template:
+    debug: true
+    cache: false
 ````
 
 When we create our request handler we define a template to render for views, now we need to create them
 
 We can add a default layout for all our views
 
-````pug
-// templates/base.pug
-html
-    head
-        title Antidot Todo List app
-        link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css")
-        link(href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
-    body
-        main
-            section(class="container")
-                block content
+```twig
+{# templates/base.html-twig#}
+<html>
+<head>
+    <title>Antidot Todo List app</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+</head>
+<body>
+<main>
+    <section class="container">
+        {% block content %}{% endblock %}
+    </section>
+</main>
 
-    script(type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
-    block scripts
-````
+{% block scripts %}{% endblock %}
+</body>
+</html>
+```
 
 And the home page view with an empty list of todos 
 
-````pug
-extends ../base.pug
-// templates/todos/index.pug
+```twig
+{% extends 'base.html.twig' %}
+{# templates/todos/index.html.twig #}
 
-block content
-    h1 Todos app List
+{% block content %}
+    <h1>Todos app List</h1>
 
-    ul(class="collection")
-        each todo in todos
-            li(class="collection-item")= todo.description()
-                a(href="#")
-                    i(class="material-icons right red-text") delete
-                a(href="#")
-                    i(class="material-icons right yellow-text") edit
-
+    <ul class="collection">
+        {% for todo in todos %}
+            <li class="collection-item">{{ todo.description() }}
+                <a href="#">
+                    <i class="material-icons right red-text">delete</i>
+                </a>
+                <a href="#">
+                    <i class="material-icons right yellow-text">edit</i>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 ````
 
 ![Step 2 Result](/images/step-2-result.jpg)
@@ -473,29 +487,42 @@ Here we create new `Todo` object with null id and the valid description, it is p
 
 The only thing we miss is the form to submit todos
 
-````pug
-extends ../base.pug
-// templates/todos/index.pug
+````twig
+{% extends 'base.html.twig' %}
+{# templates/todos/index.html.twig #}
 
-block content
-    h1 Todos app List
+{% block content %}
+    <h1>Todos app List</h1>
 
-    if error
-        div(class="card row red lighten-3 white-text" style="padding: 20px 15px")
-            dic(class="card-content")
-                span= error
+    {% if error %}
+        <div class="row">
+            <div class="card row red lighten-3 white-text" style="padding: 20px 15px">
+                <div class="card-content">
+                    <span>{{ error }}</span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
-    div(class="row")
-        div(class="col-12")
-            form(action="/todos/add" method="POST")
-                div(class="row")
-                    div(class="input-field col-12")
-                        input(type="text" placeholder="Type Todo Description" name="description" id="description")
-                div
-                    button(class="waves-effect waves-light btn-large" type="submit")
-                        i(class="material-icons left") save
-                        | Add
+    <div class="row">
+        <div class="col-12">
+            <form action="/todos/add" method="POST">
+                <div class="row">
+                    <div class="input-field col-12">
+                        <input type="text" placeholder="Type Todo Description" name="description" id="description"/>
+                    </div>
+                </div>
+                <div>
+                    <button class="waves-effect waves-light btn-large" type="submit">
+                        <i class="material-icons left">save</i>
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     ...
+    {# show todos list #}
 ````
 
 Open Getting Started App in a browser and check it
@@ -633,41 +660,58 @@ services:
     
 ````
 
-Open again `templates/todos/index.pug` file and add disclaimer and form
+Open again `templates/todos/index.html.twig` file and add the success message on top, and the remove form to the todos list. 
 
-````pug
-// templates/todos/index.pug
-extends ../base.pug
+```twig
+{% extends 'base.html.twig' %}
+{# templates/todos/index.html.twig #}
 
-block content
-    h1 Todos app List
+{% block content %}
+    <h1>Todos app List</h1>
 
-    if success
-        div(class="row")
-            div(class="card row green lighten-3 white-text" style="padding: 20px 15px")
-                dic(class="card-content")
-                    span= success
+    {% if success %}
+        <div class="row">
+            <div class="card row green lighten-3 white-text" style="padding: 20px 15px">
+                <div class="card-content">
+                    <span>{{ success }}</span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     ...
-    ul(class="collection")
-        each todo in todos
-            li(class="collection-item")= todo.description()
-                a(href='#remove-modal' + todo.id() class="modal-trigger")
-                    i(class="material-icons right red-text") delete
-                a(href="#")
-                    i(class="material-icons right yellow-text text-darken-2") edit
+    <ul class="collection">
+        {% for todo in todos %}
+            <li class="collection-item">
+                <p class="flow-text">
+                    <i class="material-icons left blue-text">build</i>
+                    {{ todo.description() }}
+                    <a href="#remove-modal{{ todo.id() }}" class="modal-trigger">
+                        <i class="material-icons right red-text">delete</i>
+                    </a>
+                    <a href="#edit-modal{{ todo.id() }}" class="modal-trigger">
+                        <i class="material-icons right yellow-text text-darken-2">edit</i>
+                    </a>
+                </p>
 
-                div(id='remove-modal' + todo.id() class="modal")
-                    div(class="modal-content")
-                        h5 Are you sure you want to delete this todo?
-                        blockquote= todo.description()
-                    div(class="modal-footer")
-                        form(method="POST" action='/todos/remove/' + todo.id() )
-                            button(type="submit" class="waves-effect waves-green btn-flat")
-                                i(class="material-icons left red-text") delete
-                                | Agree    
-````
+                <div id="remove-modal{{ todo.id() }}" class="modal">
+                    <div class="modal-content">
+                        <h5>Are you sure you want to delete this todo?</h5>
+                        <blockquote>{{ todo.description() }}</blockquote>
+                    </div>
+                    <div class="modal-footer">
+                        <form method="POST" action="/todos/remove/{{ todo.id() }}">
+                            <button type="submit" class="waves-effect waves-green btn-flat">
+                                <i class="material-icons left red-text">delete</i>
+                                Agree
+                            </button>
+                        </form>
+                    </div>
+                </div>       
+        {% endfor %}
+    </ul>
+```
 
-Materializecss modal component requires to be loaded by javascript
+The Materializecss modal component requires to be loaded by javascript
 
 ````js
 // public/js/main.js
@@ -683,11 +727,12 @@ Materializecss modal component requires to be loaded by javascript
 
 And we need to load it in the base layout
 
-````pug
-html
+````twig
+<html>
     ...
-    script(type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
-    script(type="text/javascript" src="/js/main.js")
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+{% block scripts %}{% endblock %}
     ...
 ````
 
@@ -972,53 +1017,70 @@ class Todo
 
 ### Step-5.2: Template inheritance
 
-As we can see the `templates/todos/index.pug` template starts growing, to avoid this situation we can use template inheritance, we are going to move todo list from index to new template
+As we can see the `templates/todos/index.html.twig` template starts growing, to avoid this situation we can use template inheritance, we are going to move todo list from index to new template
 
-````pug
-// templates/todos/list-item.pug
-li(class="collection-item")
-    p(class="flow-text")
-        i(class="material-icons left blue-text") build
-        = todo.description()
-        a(href='#remove-modal' + todo.id() class="modal-trigger")
-            i(class="material-icons right red-text") delete
-        a(href='#edit-modal' + todo.id() class="modal-trigger")
-            i(class="material-icons right yellow-text text-darken-2") edit
+```twig
+{# templates/todos/list-item.html.twig #}
+<li class="collection-item">
+    <p class="flow-text">
+        <i class="material-icons left blue-text">build</i>
+        {{ todo.description() }}
+        <a href="#remove-modal{{ todo.id() }}" class="modal-trigger">
+            <i class="material-icons right red-text">delete</i>
+        </a>
+        <a href="#edit-modal{{ todo.id() }}" class="modal-trigger">
+            <i class="material-icons right yellow-text text-darken-2">edit</i>
+        </a>
+    </p>
 
-    div(id='remove-modal' + todo.id() class="modal")
-        div(class="modal-content")
-            h5 Are you sure you want to delete this todo?
-            blockquote= todo.description()
-        div(class="modal-footer")
-            form(method="POST" action='/todos/remove/' + todo.id() )
-                button(type="submit" class="waves-effect waves-green btn-flat")
-                    i(class="material-icons left red-text") delete
-                    | Agree
+    <div id="remove-modal{{ todo.id() }}" class="modal">
+        <div class="modal-content">
+            <h5>Are you sure you want to delete this todo?</h5>
+            <blockquote>{{ todo.description() }}</blockquote>
+        </div>
+        <div class="modal-footer">
+            <form method="POST" action="/todos/remove/{{ todo.id() }}">
+                <button type="submit" class="waves-effect waves-green btn-flat">
+                    <i class="material-icons left red-text">delete</i>
+                    Agree
+                </button>
+            </form>
+        </div>
+    </div>
 
-    div(id='edit-modal' + todo.id() class="modal")
-        form(action='/todos/edit/' + todo.id() method="POST")
-            div(class="modal-content")
-                h5 Edit Todo content
-                textarea(class="materialize-textarea" name="description")=todo.description()
-            div(class="modal-footer")
-                button(type="submit" class="waves-effect waves-green btn-flat")
-                    i(class="material-icons left blue-text") save
-                    | Save
-````
+    <div id="edit-modal{{ todo.id() }}" class="modal">
+        <form action="/todos/edit/{{ todo.id() }}" method="POST">
+            <div class="modal-content">
+                <h5>Edit Todo content</h5>
+                <textarea class="materialize-textarea" name="description">{{ todo.description() }}</textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="waves-effect waves-green btn-flat">
+                    <i class="material-icons left blue-text">save</i>
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</li>
+```
 
-Then declare inheritance inner `index.pug` file
+Then declare inheritance inner `index.html-twig` file
 
-````pug
-// templates/todos/index.pug
-extends ../base.pug
+```twig
+{% extends 'base.html.twig' %}
+{# templates/todos/index.html.twig #}
 
-block content
+{% block content %}
+    <h1>Todos app List</h1>
     ...
-    ul(class="collection")
-        each todo in todos
-            include ./list-item.pug
-
-````
+    <ul class="collection">
+        {% for todo in todos %}
+            {% include 'todos/list-item.html.twig' %}
+        {% endfor %}
+    </ul>
+{% endblock %}
+```
 
 Now we have a fully functional Todo App, and more importantly, we have learned some skills like dependency injection, routing, dependency inversion, request handling and so on
 
